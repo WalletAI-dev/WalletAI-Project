@@ -1,13 +1,33 @@
-# Dockerfile para o backend Node.js
-FROM node:18-alpine
-
-WORKDIR /app
-
+# Estágio 1: Dependências
+FROM node:18-alpine AS deps
+WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 
+# Estágio 2: Builder
+FROM node:18-alpine AS builder
+WORKDIR /usr/src/app
+COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY . .
+RUN npx prisma generate
 
-EXPOSE 3001
+# Estágio 3: Produção
+FROM node:18-alpine AS runner
+WORKDIR /usr/src/app
 
-CMD ["npm", "start"]
+# Install bash and netcat for wait-for-it.sh
+RUN apk add --no-cache bash netcat-openbsd
+
+# Copy built application
+COPY --from=builder /usr/src/app .
+
+# Copy wait-for-it.sh script
+COPY wait-for-it.sh ./wait-for-it.sh
+RUN chmod +x ./wait-for-it.sh
+
+# Copy and make start script executable
+COPY start.sh ./start.sh
+RUN chmod +x ./start.sh
+
+EXPOSE 3333
+CMD ["./start.sh"]

@@ -16,6 +16,9 @@ yarn.lock
 .env.development.local
 .env.test.local
 .env.production.local
+backend/.env
+frontend/.env
+ai-service/.env
 
 # Python
 __pycache__/
@@ -31,6 +34,7 @@ venv.bak/
 
 # Docker
 docker-compose.override.yml
+postgres_data/
 
 # IDE
 .vscode/

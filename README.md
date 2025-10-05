@@ -1,49 +1,180 @@
-# WalletAI Project
+# WalletAI-Project
 
-Sistema inteligente de gestão financeira pessoal com categorização automática de transações usando Machine Learning.
-
-## Visão Geral
-
-Este projeto é uma aplicação full-stack que combina:
-- **Backend**: API REST em Node.js com Express
-- **Frontend**: Interface em React
-- **AI Service**: Serviço de IA em Python para categorização de transações
-- **Banco de Dados**: PostgreSQL com Prisma ORM
+Sistema de carteira inteligente com categorização automática de transações usando IA.
 
 ## Estrutura do Projeto
 
-```
-WalletAI-Project/
-├── backend/         # API Node.js
-├── frontend/        # Interface React
-└── ai-service/      # Serviço de IA Python
-```
+- **backend/**: API Node.js com Express e Prisma ORM
+- **frontend/**: Interface React com TypeScript e Vite
+- **ai-service/**: Serviço de IA em Python com FastAPI
+- **docker-compose.yml**: Orquestração dos serviços
 
 ## Tecnologias Utilizadas
 
-- **Backend**: Node.js, Express, Prisma, PostgreSQL
-- **Frontend**: React, Axios
-- **AI Service**: Python, Flask/FastAPI, scikit-learn
-- **DevOps**: Docker, Docker Compose
+### Backend
+- Node.js 18
+- Express 4.21.2
+- Prisma ORM 5.22.0
+- PostgreSQL
+- JWT para autenticação
+- bcryptjs para criptografia
+
+### Frontend
+- React 18.3.1
+- TypeScript 5.9.3
+- Vite 5.4.20
+- Styled Components 6.1.19
+- Chart.js 4.5.0
+- React Router 6.30.1
+
+### AI Service
+- Python 3.9
+- FastAPI
+- Scikit-learn
+- NLTK
+- Pandas
+
+### Infraestrutura
+- Docker & Docker Compose
+- NGINX
+- PostgreSQL
 
 ## Como Executar
 
+### Pré-requisitos
+- Docker
+- Docker Compose
+- Make (opcional, para comandos simplificados)
+
+### Execução Rápida
+
+#### Opção 1: Com Makefile (Recomendado)
 ```bash
-# Clone o repositório
-git clone <repository-url>
+# Clonar e entrar no diretório
+git clone <url-do-repositorio>
 cd WalletAI-Project
 
-# Execute com Docker Compose
-docker-compose up --build
+# Iniciar projeto completo
+make start
+
+# Ver comandos disponíveis
+make help
 ```
 
-## Equipe
+#### Opção 2: Com Docker Compose
+```bash
+# Clonar o repositório
+git clone <url-do-repositorio>
+cd WalletAI-Project
 
-- **Membro 1**: Backend (Node.js)
-- **Membro 2**: Frontend (React) - Interface
-- **Membro 3**: Frontend (React) - Componentes
-- **Membro 4**: AI Service (Python)
+# Executar script de inicialização
+./docker-start.sh
+
+# OU manualmente:
+docker-compose up --build -d
+docker-compose exec backend npx prisma migrate deploy
+```
+
+### Comandos Úteis
+
+| Comando | Descrição |
+|---------|-----------|
+| `make start` | Iniciar todos os serviços |
+| `make stop` | Parar todos os serviços |
+| `make restart` | Reiniciar serviços |
+| `make logs` | Ver logs em tempo real |
+| `make clean` | Limpar containers e volumes |
+| `make migrate` | Executar migrações |
+| `make shell-backend` | Abrir shell no backend |
+
+### Acessar os Serviços
+
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:3333
+- **AI Service**: http://localhost:8000
+- **PostgreSQL**: localhost:5432
+
+### Endpoints da API
+
+#### Autenticação
+- `POST /sessions` - Login
+- `POST /users` - Cadastro
+
+#### Transações
+- `GET /transactions` - Listar transações
+- `POST /transactions` - Criar transação
+- `PUT /transactions/:id` - Atualizar transação
+- `DELETE /transactions/:id` - Deletar transação
+
+#### AI Service
+- `POST /categorize` - Categorizar transação
+
+## Desenvolvimento Local
+
+### Backend
+```bash
+cd backend
+npm install
+npx prisma migrate dev
+npm run dev
+```
+
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### AI Service
+```bash
+cd ai-service
+pip install -r requirements.txt
+python -m uvicorn main:app --reload --port 8000
+```
+
+## Estrutura de Pastas
+
+```
+WalletAI-Project/
+├── backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── middlewares/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── server.js
+│   ├── prisma/
+│   ├── package.json
+│   └── Dockerfile
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── contexts/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── styles/
+│   ├── package.json
+│   ├── Dockerfile
+│   └── nginx.conf
+├── ai-service/
+│   ├── main.py
+│   ├── categorizer.py
+│   ├── requirements.txt
+│   └── Dockerfile
+├── docker-compose.yml
+├── .env
+└── README.md
+```
 
 ## Contribuição
 
-Consulte a documentação específica de cada módulo para instruções detalhadas de desenvolvimento.
+1. Faça fork do projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## Licença
+
+Este projeto está sob a licença MIT.
