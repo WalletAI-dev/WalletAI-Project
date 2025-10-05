@@ -1,0 +1,8 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Model files (se não quiser versioná-los)
+# app/model/*.pkl
