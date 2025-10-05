@@ -1,0 +1,25 @@
+# Dependencies
+/node_modules
+package-lock.json
+
+# Environment variables
+.env
+
+# Prisma
+/prisma/migrations/*.sql
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Coverage
+coverage/
+
+# Build
+dist/
+build/
+
+# Temporary files
+.tmp/
+tmp/
