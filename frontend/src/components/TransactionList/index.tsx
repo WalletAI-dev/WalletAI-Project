@@ -17,7 +17,7 @@ import {
 interface Transaction {
   id: string;
   description: string;
-  amount: number;
+  amount: string; // Backend retorna como string
   type: 'income' | 'expense';
   date: string;
   category: {
@@ -96,7 +96,7 @@ export default function TransactionList({ refresh }: TransactionListProps) {
           </TransactionInfo>
           
           <TransactionAmount type={transaction.type}>
-            {transaction.type === 'income' ? '+' : '-'} R$ {transaction.amount.toFixed(2)}
+            {transaction.type === 'income' ? '+' : '-'} R$ {parseFloat(transaction.amount).toFixed(2)}
           </TransactionAmount>
           
           <DeleteButton onClick={() => handleDelete(transaction.id)}>

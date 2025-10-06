@@ -37,6 +37,7 @@ interface SpendingHistoryChartProps {
 export default function SpendingHistoryChart({ refresh }: SpendingHistoryChartProps) {
   const [data, setData] = useState<SpendingData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     loadSpendingHistory();
@@ -45,6 +46,7 @@ export default function SpendingHistoryChart({ refresh }: SpendingHistoryChartPr
   async function loadSpendingHistory() {
     try {
       setLoading(true);
+      setError('');
       const response = await api.get('/transactions');
       const transactions = response.data;
 
@@ -78,6 +80,7 @@ export default function SpendingHistoryChart({ refresh }: SpendingHistoryChartPr
       setData(spendingData);
     } catch (error) {
       console.error('Erro ao carregar histórico de gastos:', error);
+      setError('Erro ao carregar dados do gráfico');
     } finally {
       setLoading(false);
     }
@@ -85,6 +88,10 @@ export default function SpendingHistoryChart({ refresh }: SpendingHistoryChartPr
 
   if (loading) {
     return <div>Carregando gráfico...</div>;
+  }
+
+  if (error) {
+    return <div>Erro: {error}</div>;
   }
 
   const chartData = {
@@ -126,7 +133,7 @@ export default function SpendingHistoryChart({ refresh }: SpendingHistoryChartPr
         ticks: {
           color: '#C4C4CC',
           callback: function(value: any) {
-            return 'R$ ' + value.toFixed(2);
+            return 'R$ ' + parseFloat(value).toFixed(2);
           },
         },
         grid: {

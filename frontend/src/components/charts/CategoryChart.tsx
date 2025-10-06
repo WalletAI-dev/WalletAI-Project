@@ -32,6 +32,7 @@ interface CategoryChartProps {
 export default function CategoryChart({ refresh }: CategoryChartProps) {
   const [data, setData] = useState<CategoryData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     loadCategoryData();
@@ -40,6 +41,7 @@ export default function CategoryChart({ refresh }: CategoryChartProps) {
   async function loadCategoryData() {
     try {
       setLoading(true);
+      setError('');
       const response = await api.get('/transactions');
       const transactions = response.data;
 
@@ -61,6 +63,7 @@ export default function CategoryChart({ refresh }: CategoryChartProps) {
       setData(categoryData);
     } catch (error) {
       console.error('Erro ao carregar dados de categoria:', error);
+      setError('Erro ao carregar dados do gráfico');
     } finally {
       setLoading(false);
     }
@@ -68,6 +71,10 @@ export default function CategoryChart({ refresh }: CategoryChartProps) {
 
   if (loading) {
     return <div>Carregando gráfico...</div>;
+  }
+
+  if (error) {
+    return <div>Erro: {error}</div>;
   }
 
   if (data.length === 0) {
@@ -120,7 +127,7 @@ export default function CategoryChart({ refresh }: CategoryChartProps) {
         ticks: {
           color: '#C4C4CC',
           callback: function(value: any) {
-            return 'R$ ' + value.toFixed(2);
+            return 'R$ ' + parseFloat(value).toFixed(2);
           },
         },
         grid: {

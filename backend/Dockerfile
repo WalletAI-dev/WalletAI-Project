@@ -15,8 +15,8 @@ RUN npx prisma generate
 FROM node:18-alpine AS runner
 WORKDIR /usr/src/app
 
-# Install bash and netcat for wait-for-it.sh
-RUN apk add --no-cache bash netcat-openbsd
+# Install bash, netcat and openssl for Prisma and wait-for-it.sh
+RUN apk add --no-cache bash netcat-openbsd openssl
 
 # Copy built application
 COPY --from=builder /usr/src/app .
